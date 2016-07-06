@@ -53,7 +53,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.teamdev</groupId>
-			<artifactId>license</artifactId>
+			<artifactId>licence</artifactId>
 			<version>6.5</version>
 		</dependency>
 	</dependencies>
