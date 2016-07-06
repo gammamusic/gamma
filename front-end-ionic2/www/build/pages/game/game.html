@@ -1,0 +1,28 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Game
+  </ion-title>
+</ion-navbar>
+
+<ion-content class="game">
+  
+  <div>
+    Tempo: <progress max="{{timeTotal}}" value="{{timeRemaining}}"></progress> / Pontuação: {{score}}
+    <button block (click)="start()">START</button>
+  </div>
+  
+  
+  
+  <div style="position:relative">
+    <img src="img/clave_sol_fa.png"/>
+    <img *ngFor="let note of gameNotes" 
+        src="{{note.info.src}}"
+        [ngStyle] = "{'position':'absolute', 'left':note.info.left, 'top':note.info.top}" />
+  </div>
+  
+  <!--<ion-card *ngFor="let nota of notas" >
+    <ion-card-header>
+      {{ nota }}
+    </ion-card-header>
+  </ion-card>-->
+</ion-content>

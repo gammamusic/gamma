@@ -1,0 +1,22 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Preferências
+  </ion-title>
+</ion-navbar>
+
+<ion-content class="outer-content">
+  <ion-list>
+    <ion-item text-wrap>
+      <ion-label>Tempo máximo para responder cada desafio (segundos)</ion-label>
+      <ion-datetime displayFormat="h" pickerFormat="h" [(ngModel)]="secondsByChallenges" 
+      doneText="OK" cancelText="Cancelar" (change)="updateSecondsByChallenges($event)">
+      </ion-datetime>
+    </ion-item>
+    <ion-item text-wrap>
+      <ion-label>Números de desafios por jogo</ion-label>
+      <ion-datetime displayFormat="m" pickerFormat="m" [(ngModel)]="numberByChallenges" 
+      doneText="OK" cancelText="Cancelar" (change)="updateNumberByChallenges($event)">
+      </ion-datetime>
+    </ion-item>
+  </ion-list>  
+</ion-content>

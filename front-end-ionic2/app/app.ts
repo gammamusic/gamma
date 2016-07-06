@@ -2,18 +2,20 @@ import {App, Platform, Storage, SqlStorage} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {ConnectMidiInputPage} from './pages/connect-midiinput/connect-midiinput';
+import {PreferencesPage} from './pages/preferences/preferences';
 import {MidiInputService} from './providers/midiinput-service/midiinput-service';
-import {RecordsService} from './providers/records-service/records-service';
+import {StorageService} from './providers/storage-service/storage-service';
 
 
 @App({
-  template: '<ion-nav [root]="rootPage"></ion-nav>',
+  template: '<ion-nav [root]="rootPage">Carregando...</ion-nav>',
   config: {}, // http://ionicframework.com/docs/v2/api/config/Config/,
-  providers: [MidiInputService, RecordsService]
+  providers: [MidiInputService, StorageService]
 })
 export class MyApp {
   //rootPage: any = HomePage;
   rootPage: any = ConnectMidiInputPage;
+  //rootPage: any = PreferencesPage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
