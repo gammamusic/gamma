@@ -17,7 +17,11 @@ export class MyApp {
   rootPage: any = ConnectMidiInputPage;
   //rootPage: any = PreferencesPage;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform/*, private location: Location*/, midiInputService:MidiInputService) {
+    if (document.referrer.endsWith('autoConnectRedirect.html')) {
+      midiInputService.autoConnect = true;
+    }
+    
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

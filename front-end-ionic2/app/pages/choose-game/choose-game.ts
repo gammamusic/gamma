@@ -1,5 +1,6 @@
-import {Page, NavController, NavParams, Alert} from 'ionic-angular';
+import {Page, NavController, NavParams, Alert, Modal, ViewController} from 'ionic-angular';
 import {GamePage} from '../game/game';
+import {PreferencesPage} from '../preferences/preferences';
 import {NoteLevel} from '../../providers/note-service/note-service';
 
 @Page({
@@ -10,15 +11,18 @@ export class ChooseGamePage {
   public fa:boolean = false;
   public solfa:boolean = false;
   
-  public 
-  
   private delayShowAlertScore:boolean = false;
   private delayScore:any;
 
   constructor(private nav: NavController,
-              private navParams: NavParams) {
+              private navParams: NavParams,
+              public viewCtrl: ViewController) {
                 
     
+  }
+  
+  onPageLoaded() {
+    this.viewCtrl.showBackButton(false);
   }
   
   onPageDidEnter() {
@@ -39,6 +43,13 @@ export class ChooseGamePage {
     });
   }
   
+  presentFilter() {
+    let modal = Modal.create(PreferencesPage);
+    this.nav.present(modal);
+  }
+  
+  
+  //TODO: esse método faz sentido?
   showAlertScore() {
     let alert = Alert.create({
       title: 'Pontuação',

@@ -1,6 +1,6 @@
-import {Page, NavController, Events} from 'ionic-angular';
+import {Page, NavController, Events, ViewController} from 'ionic-angular';
 
-import {StorageService} from '../../providers/storage-service/storage-service';
+import {StorageService, SqlStorageConstants} from '../../providers/storage-service/storage-service';
 
 
 @Page({
@@ -12,16 +12,21 @@ export class PreferencesPage  {
   public numberByChallenges: string;
 
   constructor(private nav: NavController,
-              public storageService: StorageService) {
+              public storageService: StorageService,
+              private viewCtrl: ViewController) {
                 
     new Promise((resolve, reject) => {
-      this.storageService.getPreferenceOrDefault("g-secondsByChallenges", "3", {resolve: resolve});
+      var constant = SqlStorageConstants.G_SECONDS_BY_CHALLENGES;
+      this.storageService.getPreferenceOrDefault(constant.key, constant.default, {resolve: resolve});
     }).then(data => {
-      this.secondsByChallenges = "0" + data[0] + ":00";
+      let zero = data[0].length == 1 ? "0" : "";
+      let value = zero + data;
+      this.secondsByChallenges = zero + data[0] + ":00";
     });
     
     new Promise((resolve, reject) => {
-      this.storageService.getPreferenceOrDefault("g-numberByChallenges", "20", {resolve: resolve});
+      var constant = SqlStorageConstants.G_NUMBER_BY_CHALLENGES;
+      this.storageService.getPreferenceOrDefault(constant.key, constant.default, {resolve: resolve});
     }).then(data => {
       let zero = data[0].length == 1 ? "0" : "";
       let value = zero + data;
@@ -39,5 +44,9 @@ export class PreferencesPage  {
     let value = zero + e.minute.text;
     this.numberByChallenges = "00:" + value;
     this.storageService.updatePreference("g-numberByChallenges", value);
+  }
+  
+  applyFilters() {
+    this.viewCtrl.dismiss();
   }
 }

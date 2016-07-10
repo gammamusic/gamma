@@ -3,15 +3,12 @@
     Game
   </ion-title>
 </ion-navbar>
-
-<ion-content class="game">
   
+<ion-content class="game">
   <div>
     Tempo: <progress max="{{timeTotal}}" value="{{timeRemaining}}"></progress> / Pontuação: {{score}}
-    <button block (click)="start()">START</button>
+    <button block (click)="start()" [hidden]="isGameStarted">Iniciar!</button>
   </div>
-  
-  
   
   <div style="position:relative">
     <img src="img/clave_sol_fa.png"/>

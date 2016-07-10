@@ -26,7 +26,7 @@ WebMvcAutoConfiguration.WebMvcAutoConfigurationAdapter {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("redirect:/index.html?h=1");
+		registry.addViewController("/").setViewName("redirect:/autoConnectRedirect.html");
 	}
 
 }

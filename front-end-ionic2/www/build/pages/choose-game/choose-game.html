@@ -2,12 +2,17 @@
   <ion-title>
     O que vamos treinar hoje?
   </ion-title>
+    <ion-buttons end>
+      <button (click)="presentFilter()">
+        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      </button>
+    </ion-buttons>
 </ion-navbar>
 
 <ion-content class="choose-game">
   
   <ion-card>
-    <ion-list>
+    <ion-list text-wrap>
       <button ion-item (click)="goToGame('level1')">
         <!--<ion-icon name="cart" item-left ></ion-icon>-->
         Nível 1 - Mão direita

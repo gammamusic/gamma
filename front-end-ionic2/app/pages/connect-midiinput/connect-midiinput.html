@@ -1,14 +1,14 @@
 <ion-navbar *navbar>
   <ion-title>
-    Conexão como o teclado3
+    Conexão com o servidor.
   </ion-title>
 </ion-navbar>
 
-<ion-content class="connect-midiinput">
+<ion-content class="connect-midiinput" onload="midiInput.pageLoad()">
   <ion-list inset>
     <ion-item>
       <ion-label>Host</ion-label>
-      <ion-input [(ngModel)]="midiInput.host" type="text"></ion-input>
+      <ion-input [(ngModel)]="midiInput.host" type="text" #myInput></ion-input>
     </ion-item>
     <ion-item>
       <ion-label>Status</ion-label>
@@ -17,6 +17,6 @@
   </ion-list>
   
   <div padding>
-    <button block (click)="midiInput.connect()">Connect</button>
+    <button block (click)="startConnection()" #buttonConnect>Conectar</button>
   </div>
 </ion-content>

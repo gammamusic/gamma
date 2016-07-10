@@ -126,9 +126,10 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 	public void init() {
 
 		try {
-			URL url = getClass().getResource("/icon.ico");
+			URL url = getClass().getResource("/icon.png");
 	        ImageIcon imgicon = new ImageIcon(url);
 	        super.setIconImage(imgicon.getImage());
+	        super.setTitle("Gamma Music Notation Training");
 	        
 	        while(!BrowserService.getInstance().isReady()){
 	        	Thread.sleep(500);
@@ -178,10 +179,10 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			addressPane.add(editServidor);
 			
 			//TODO: internationalization
-			JButton recarregareButton = new JButton("Recarregar");
+			JButton recarregareButton = new JButton("Recarregar Página Principal");
 			recarregareButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					browser.reload();
+					loadFrontEndUrl(browser, editServidor.getText());
 				}          
 			});
 			addressPane.add(recarregareButton, "wrap");
@@ -199,12 +200,8 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			
 			centreWindow(this);
 			
-			Browser.invokeAndWaitFinishLoadingMainFrame(browser, new Callback<Browser>() {
-	            @Override
-	            public void invoke(Browser value) {
-	                value.loadURL(editServidor.getText());
-	            }
-	        });
+			loadFrontEndUrl(browser, editServidor.getText());
+			
 	        
 	        this.setVisible(true);
 	        
@@ -275,6 +272,15 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void loadFrontEndUrl(Browser browser, String url) {
+		Browser.invokeAndWaitFinishLoadingMainFrame(browser, new Callback<Browser>() {
+            @Override
+            public void invoke(Browser value) {
+                value.loadURL(url);
+            }
+        });
 	}
 
 	public static void centreWindow(Window frame) {

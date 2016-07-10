@@ -3,6 +3,7 @@
 import {Page, NavController, NavParams, Alert} from 'ionic-angular';
 import {NoteService, Note, NoteHtml, ClaveFa, ClaveSol, NoteLevel} from '../../providers/note-service/note-service';
 import {MidiInputService, HandleMidiInputListerner} from '../../providers/midiinput-service/midiinput-service';
+import {StorageService, SqlStorageConstants} from '../../providers/storage-service/storage-service';
 import {ResultPage} from '../result/result';
 import {Observable} from 'rxjs/Rx'
 import * as SockJS from 'sockjs-client';
@@ -20,14 +21,15 @@ export class GamePage implements HandleMidiInputListerner {
   public inputNotes:Note[] = [];
   public gameNotes:Note[] = [];
   public score:number = 0;
-  public isGameRunning:boolean = true;
+  public isChanllengeRunning:boolean = false;
+  public isGameStarted = false;
   
   public timeRemaining:number = 0;
   public timeTotal:number = 0;
   public incremento:number = 0;
   public updateProgressBySecond:number = 5;
   public intervalValue:number = 1000 / this.updateProgressBySecond;
-  public secondsToResponse:number = 5; //TODO: personalizar via localstorange
+  public secondsToResponse:number;
   
   private timer;
   private lastNote:Note;
@@ -42,7 +44,8 @@ export class GamePage implements HandleMidiInputListerner {
   constructor(private nav: NavController, 
               private noteService: NoteService,
               private navParams: NavParams,
-              public midiInput: MidiInputService) {
+              public midiInput: MidiInputService,
+              public storageService: StorageService) {
                 
     //TODO: BUG? no construtor vai iniciar só uma vez? Parece que não.
     this.level = navParams.get('level');
@@ -123,8 +126,8 @@ export class GamePage implements HandleMidiInputListerner {
   }
   
   computeNewScore(note?:Note) {
-    if (this.isGameRunning) {
-      this.isGameRunning = false;
+    if (this.isChanllengeRunning) {
+      this.isChanllengeRunning = false;
       
       if (note != null) {
         this.inputNotes.push(note);
@@ -153,7 +156,20 @@ export class GamePage implements HandleMidiInputListerner {
   }
   
   start() {
-    this.initTimer();
+    var p1 = new Promise((resolve, reject) => {
+      var constant = SqlStorageConstants.G_SECONDS_BY_CHALLENGES;
+      this.storageService.getPreferenceOrDefault(constant.key, constant.default, {resolve: resolve});
+    }).then(data => {
+      this.secondsToResponse = parseInt(data[0]);
+      new Promise((resolve, reject) => {
+        var constant = SqlStorageConstants.G_NUMBER_BY_CHALLENGES;
+        this.storageService.getPreferenceOrDefault(constant.key, constant.default, {resolve: resolve});
+      }).then(data => {
+        this.maxChallenges = parseInt(data[0]);
+        this.initTimer();
+        this.isGameStarted = true;
+      });
+    });
   }
   
   reset() {
@@ -164,7 +180,7 @@ export class GamePage implements HandleMidiInputListerner {
   }
   
   stop() {
-    this.isGameRunning = false;
+    this.isChanllengeRunning = false;
     if (this.timer != null) {
       this.timer.unsubscribe();
     }
@@ -199,7 +215,7 @@ export class GamePage implements HandleMidiInputListerner {
                               this.computeNewScore();
                             }
                           });
-    this.isGameRunning = true;      
+    this.isChanllengeRunning = true;
   }
   
 }

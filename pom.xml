@@ -119,7 +119,7 @@
 							<jar>${project.artifactId}-${project.version}.jar</jar>
 							<outfile>${project.build.directory}/gamma.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
-							<icon>${project.basedir}/src/main/resources/icon.ico</icon>
+							<icon>${project.basedir}/front-end-ionic2/www/favicon.ico</icon>
 <!-- 							<classPath>./tools/libjar/*</classPath> -->
 							<jre>
 								<path>.\tools\jre\</path>

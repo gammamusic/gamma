@@ -22,6 +22,7 @@ export class MidiInputService {
   
   private client:SockJSClass;
   private mystomp:StompClient;
+  autoConnect:boolean = false;
   
   private handleMidiInputListerner:HandleMidiInputListerner;
   private connectionListerner:ConnectionListerner;

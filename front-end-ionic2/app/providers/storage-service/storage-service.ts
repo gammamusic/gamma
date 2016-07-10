@@ -3,6 +3,11 @@ import {Http} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {App, Platform, Storage, SqlStorage} from 'ionic-angular';
 
+export class SqlStorageConstants {
+    public static get G_SECONDS_BY_CHALLENGES(): any    { return {'key': "g-secondsByChallenges", 'default': '3'} };
+    public static get G_NUMBER_BY_CHALLENGES(): any    { return {'key': "g-numberByChallenges", 'default': '20'} };
+}
+
 @Injectable()
 export class StorageService {
   public storage: Storage = null;

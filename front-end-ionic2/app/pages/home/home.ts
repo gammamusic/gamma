@@ -4,10 +4,10 @@ import {DetailsPage} from '../details/details';
 
 @Page({
   templateUrl: 'build/pages/home/home.html',
-  providers: [GitHubService]
+  //providers: [GitHubService]
 })
 export class HomePage {
-  public foundRepos;
+  /*public foundRepos;
   public username;
 
   constructor(private github: GitHubService,
@@ -26,5 +26,5 @@ export class HomePage {
 
   goToDetails(repo) {
     this.nav.push(DetailsPage, { repo: repo });
-  }
+  }*/
 }
