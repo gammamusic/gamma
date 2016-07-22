@@ -1,3 +1,8 @@
+services:
+ - docker
+
+script:
+ - "docker run -i -v \"${PWD}:/MyProgram\" toopher/centos-i386:centos6 /bin/bash -c \"linux32 --32bit i386 /MyProgram/build.sh\""
 os:
   - windows
 language: java
