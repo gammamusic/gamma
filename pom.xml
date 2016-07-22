@@ -242,6 +242,7 @@
 					<descriptors>
 						<descriptor>assembly.xml</descriptor>
 					</descriptors>
+                                        <outputDirectory>${project.build.directory}/dist</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
