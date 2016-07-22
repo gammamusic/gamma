@@ -3,24 +3,16 @@ package com.github.gmnt.app;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -31,14 +23,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
@@ -50,6 +40,7 @@ import com.github.gmnt.app.service.HandleMidiInputListener;
 import com.github.gmnt.app.service.MidiInput;
 import com.github.gmnt.app.service.MidiInputService;
 import com.github.gmnt.app.service.MidiInputService.MidiInputDevice;
+import com.github.vbauer.herald.annotation.Log;
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.Callback;
 import com.teamdev.jxbrowser.chromium.events.FailLoadingEvent;
@@ -59,9 +50,9 @@ import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
 import com.teamdev.jxbrowser.chromium.events.LoadEvent;
 import com.teamdev.jxbrowser.chromium.events.ProvisionalLoadingEvent;
 import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
-import com.teamdev.jxbrowser.chromium.events.StatusEvent;
-import com.teamdev.jxbrowser.chromium.events.StatusListener;
 import com.teamdev.jxbrowser.chromium.swing.BrowserView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jportmidi.JPortMidiException;
 import net.miginfocom.swing.MigLayout;
@@ -74,6 +65,8 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 
 	private JLabel statusLabel = new JLabel("");
 	private JComboBox<MidiInputDevice> comboBoxMidiInput = new JComboBox<MidiInputDevice>();
+        
+        @Log private Logger logger;
 
 	@Autowired
 	private ApplicationContext context;
@@ -105,11 +98,11 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 
 			if (!input.equals(MidiInputDevice.DEVICE_FAKE_SELECT)) {
 				try {
-					//TODO: testar como o KORG se comporta ao estar ativado em outro software (ex.: FL Studio)
 					midiInputService.openInput(input);
 				} catch (JPortMidiException e) {
-					e.printStackTrace();
-					showError(e.getMessage());
+                                        showError(e.getMessage());
+                                        logger.log(Level.SEVERE, "Erro ao selecionar MIDI INPUT" + input.getName(), e);
+                                        resetAndUpdateInputDevices();
 				}
 			}
 			lastMidiInputDevice = input;
@@ -129,7 +122,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			URL url = getClass().getResource("/icon.png");
 	        ImageIcon imgicon = new ImageIcon(url);
 	        super.setIconImage(imgicon.getImage());
-	        super.setTitle("Gamma Music Notation Training");
+	        super.setTitle("Gamma Music Notation Training - Versão: " + this.getClass().getPackage().getImplementationVersion());
 	        
 	        while(!BrowserService.getInstance().isReady()){
 	        	Thread.sleep(500);
@@ -144,7 +137,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 	        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	        this.add(addressPane, BorderLayout.NORTH);
 	        
-	        this.setSize(1000, 500);
+	        this.setSize(400, 500);
 	        this.setLocationRelativeTo(null);
 	        
 	        
@@ -154,6 +147,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			comboBoxMidiInput.addActionListener (new ActionListener () {
 				public void actionPerformed(ActionEvent e) {
 					setMidiInputDevice((MidiInputDevice)comboBoxMidiInput.getSelectedItem());
+                                        statusLabel.setText("");
 				}
 			});
 			addressPane.add(comboBoxMidiInput);
@@ -311,6 +305,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 
 	private void resetAndUpdateInputDevices() {
 		try {
+                        statusLabel.setText("");
 			if (midiInputService.isOpenInput()) {
 				midiInputService.closeInput();
 			}

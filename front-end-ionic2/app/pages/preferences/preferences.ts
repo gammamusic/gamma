@@ -1,19 +1,22 @@
-import {Page, NavController, Events, ViewController} from 'ionic-angular';
-
+import {Page, NavController, Events, ViewController, Alert} from 'ionic-angular';
+import {BasePage} from '../base/base-page';
 import {StorageService, SqlStorageConstants} from '../../providers/storage-service/storage-service';
 
 
 @Page({
   templateUrl: 'build/pages/preferences/preferences.html'
 })
-export class PreferencesPage  {
+export class PreferencesPage extends BasePage {
   
   public secondsByChallenges: string;
   public numberByChallenges: string;
 
-  constructor(private nav: NavController,
+  constructor(public nav: NavController,
+              public events: Events,
               public storageService: StorageService,
               private viewCtrl: ViewController) {
+                
+    super(nav, events);
                 
     new Promise((resolve, reject) => {
       var constant = SqlStorageConstants.G_SECONDS_BY_CHALLENGES;
@@ -44,6 +47,23 @@ export class PreferencesPage  {
     let value = zero + e.minute.text;
     this.numberByChallenges = "00:" + value;
     this.storageService.updatePreference("g-numberByChallenges", value);
+  }
+  
+  cleanRecords() {
+    this.storageService.cleanRecords();
+    let alert = Alert.create({
+      title: 'Informação',
+      subTitle: `Os records foram excluídos.`,
+      buttons: [
+          {
+              text: 'OK',
+              handler: () => {
+                  
+              }
+          }
+      ]
+    });
+    this.nav.present(alert);
   }
   
   applyFilters() {

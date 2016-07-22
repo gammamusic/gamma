@@ -1,9 +1,10 @@
 /// <reference path="../../../node_modules/retyped-sockjs-client-tsd-ambient/sockjs-client.d.ts" />
 /// <reference path="../../../typings/modules/stomp-websocket/stomp-websocket.d.ts" />
-import {Page, NavController, NavParams, Alert} from 'ionic-angular';
+import {Page, NavController, NavParams, Alert, Events} from 'ionic-angular';
 import {NoteService, Note, NoteHtml, ClaveFa, ClaveSol, Chord, BasicNote} from '../../providers/note-service/note-service';
 import {MidiInputService, HandleMidiInputListerner} from '../../providers/midiinput-service/midiinput-service';
 import {ResultPage} from '../result/result';
+import {BasePage} from '../base/base-page';
 import {Observable} from 'rxjs/Rx'
 import * as SockJS from 'sockjs-client';
 import BaseEvent = __SockJSClient.BaseEvent;
@@ -14,7 +15,7 @@ import SockJSClass = __SockJSClient.SockJSClass;
   providers: [NoteService],
   selector: 'game'
 })
-export class GameChordPage implements HandleMidiInputListerner {
+export class GameChordPage extends BasePage implements HandleMidiInputListerner {
 
   
   public inputNotes:BasicNote[] = [];
@@ -37,15 +38,24 @@ export class GameChordPage implements HandleMidiInputListerner {
   private counterChallenges:number = 0;
   
   
-  constructor(private nav: NavController, 
+  constructor(public nav: NavController, 
               private noteService: NoteService,
               private navParams: NavParams,
-              public midiInput: MidiInputService) {
+              public midiInput: MidiInputService,
+              public events: Events) {
+    super(nav, events);
+    this.listenEvents();
   }
   
   //TODO: fazer o mesmo no game (=game-note)
   onPageDidEnter() {
     this.midiInput.setHandleMidiInputListerner(this);
+  }
+  
+  listenEvents() {
+    this.events.subscribe('midiInput:errorConnectionGeneric', () => {
+      this.stop();
+    });
   }
   
   onConnection() {}
@@ -116,6 +126,7 @@ export class GameChordPage implements HandleMidiInputListerner {
       
       if (this.counterChallenges >= this.maxChallenges) {
         this.stop();
+        this.goToResult();
         return;
       }
       
@@ -143,7 +154,6 @@ export class GameChordPage implements HandleMidiInputListerner {
       this.timer.unsubscribe();
     }
     this.cleanTimer();
-    this.goToResult();
   }
   
   goToResult() {

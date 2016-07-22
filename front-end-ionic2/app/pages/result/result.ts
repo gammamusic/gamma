@@ -1,4 +1,5 @@
-import {Page, NavController, NavParams, ViewController} from 'ionic-angular';
+import {Page, NavController, NavParams, ViewController, Events} from 'ionic-angular';
+import {BasePage} from '../base/base-page';
 import {ChooseGamePage} from '../choose-game/choose-game';
 import {StorageService} from '../../providers/storage-service/storage-service';
 
@@ -6,14 +7,15 @@ import {StorageService} from '../../providers/storage-service/storage-service';
 @Page({
   templateUrl: 'build/pages/result/result.html',
 })
-export class ResultPage {
+export class ResultPage extends BasePage {
   public records;
   public isRecord : boolean = false; 
   constructor(public nav: NavController,
               public navParams: NavParams,
               public viewCtrl: ViewController,
-              public storageService: StorageService) {
-    
+              public storageService: StorageService,
+              public events: Events) {
+    super(nav, events);
   }
   
   onPageLoaded() {
@@ -22,7 +24,10 @@ export class ResultPage {
   
   onPageWillEnter() {
     new Promise((resolve, reject) => {
-      this.storageService.tryAddNewRecord(this.navParams.get("score"), "note-fa-n1", {resolve: resolve});
+      //TODO: setar corretamente a chave
+      this.storageService.tryAddNewRecord(this.navParams.get("score"), 
+        "record-note-" + this.navParams.get("level").id, 
+        {resolve: resolve});
     }).then(data => {
       this.records =  data[0];
       this.isRecord = data[1];

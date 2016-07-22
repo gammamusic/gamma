@@ -25,6 +25,10 @@
 	        <name>project</name>
 	        <url>file:${project.basedir}/repo</url>
 	    </repository>
+            <repository>
+                <id>jitpack.io</id>
+                <url>https://jitpack.io</url>
+            </repository>
 	</repositories>
 
 	<dependencies>
@@ -56,14 +60,89 @@
 			<artifactId>licence</artifactId>
 			<version>6.5</version>
 		</dependency>
+                <dependency>
+                    <groupId>net.vidageek</groupId>
+                    <artifactId>mirror</artifactId>
+                    <version>1.6.1</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.github.vbauer</groupId>
+                    <artifactId>herald</artifactId>
+                    <version>1.2.2</version>
+                </dependency>
 	</dependencies>
 
 	<build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </resource>
+                        <resource>
+      <directory>src/main/resources</directory>
+      <filtering>true</filtering>
+      <includes>
+        <include>**/version.json</include>
+      </includes>
+    </resource>
+    <resource>
+      <directory>src/main/resources</directory>
+      <filtering>false</filtering>
+      <excludes>
+        <exclude>**/version.json</exclude>
+      </excludes>
+    </resource>
+                </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+                        
+                        <plugin>
+                          <artifactId>maven-antrun-plugin</artifactId>
+                           <version>1.4</version>
+                           <executions>
+                            <execution>
+                              <phase>process-resources</phase>
+                              <configuration>
+                                 <tasks>
+                                   <copy file="${project.build.outputDirectory}/version.json"
+                                     toFile="${basedir}/front-end-ionic2/www/version.json" overwrite="true" />
+                                </tasks>
+                              </configuration>
+                              <goals>
+                                <goal>run</goal>
+                              </goals>
+                            </execution>
+                          </executions>
+                        </plugin>
+                        
+                        <plugin>
+                          <groupId>com.google.code.maven-replacer-plugin</groupId>
+                          <artifactId>replacer</artifactId>
+                          <version>1.5.2</version>
+                          <executions>
+                            <execution>
+                              <phase>process-resources</phase>
+                              <goals>
+                                <goal>replace</goal>
+                              </goals>
+                            </execution>
+                          </executions>
+                          <configuration>
+                           <ignoreMissingFile>false</ignoreMissingFile>
+                           <file>${basedir}/front-end-ionic2/www/version.json</file>
+                            <replacements>
+                              <replacement>
+                                <token>%project.version%</token>
+                                <value>${project.version}</value>
+                              </replacement>
+                            </replacements>
+                          </configuration>
+                        </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

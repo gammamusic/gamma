@@ -79,6 +79,13 @@ export class StorageService {
           });
       });
   }
+  
+  cleanRecords() {
+    this.platform.ready()
+      .then(() => {
+        this.storage.query("DELETE FROM KV WHERE KEY LIKE 'record-%'");
+      })
+  }
 
 }
 

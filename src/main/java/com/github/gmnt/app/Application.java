@@ -6,10 +6,15 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.SplashScreen;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.concurrent.Future;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.gmnt.app.dto.VersionDTO;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -24,6 +29,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import com.github.gmnt.app.service.BrowserService;
 import com.github.gmnt.app.service.IonicServerService;
 import com.github.gmnt.app.service.IonicServerService.IonicServerResult;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import jportmidi.JPortMidiException;
 
@@ -181,6 +188,7 @@ public class Application {
 
     
     private static void checkEnveriment() {
+        checkNewVersion();
     	checkJava32bits();
     	configPort("server.port", 4444);
     	configPort("client.port", 55555);
@@ -246,6 +254,29 @@ public class Application {
         }
 
         return false;
+    }
+
+    private static void checkNewVersion() {
+        try {
+            URL url;
+            url = new URL("https://raw.githubusercontent.com/gammamusic/dist/master/lastedversion.json");
+             ObjectMapper mapper = new ObjectMapper();
+            VersionDTO version = mapper.readValue(url, new TypeReference<VersionDTO>(){});
+            String localCurrentVersion = Application.class.getPackage().getImplementationVersion();
+            if (localCurrentVersion == null || !Application.class.getPackage().getImplementationVersion().equals(version.getLast())) {
+                JDialog dialog = new JOptionPane(String.format("Uma nova versão desse aplicativo (%s) está disponível em https://gammamusic.github.io/.", version.getLast()),
+    				JOptionPane.INFORMATION_MESSAGE,
+    				JOptionPane.DEFAULT_OPTION).createDialog("Aviso");
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(true);
+                dialog.dispose();                                
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+        
+            } catch (IOException ex) {
+            Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
 
 }

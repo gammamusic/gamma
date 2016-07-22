@@ -1,7 +1,9 @@
+import {NavController, Alert, Events} from 'ionic-angular';
 import {Injectable} from '@angular/core';
 import * as SockJS from 'sockjs-client';
 import BaseEvent = __SockJSClient.BaseEvent;
 import SockJSClass = __SockJSClient.SockJSClass;
+import OpenEvent = __SockJSClient.OpenEvent;
 
 export interface HandleMidiInputListerner {
   handleMidiInput(message:string):void;
@@ -23,18 +25,18 @@ export class MidiInputService {
   private client:SockJSClass;
   private mystomp:StompClient;
   autoConnect:boolean = false;
+  isConnecting:boolean = false;
   
   private handleMidiInputListerner:HandleMidiInputListerner;
   private connectionListerner:ConnectionListerner;
   
-  constructor() {
+  constructor(private events: Events) {
     this.count++;
   }
   
-  reconnect() {
-    //TODO: descomentar
-    ///setTimeout($scope.initSockets, 10000);
-  };
+  onopen(e: OpenEvent) {
+    console.log('onopen()');
+  }
   
   setHandleMidiInputListerner(handleMidiInputListerner:HandleMidiInputListerner) {
     this.handleMidiInputListerner = handleMidiInputListerner;
@@ -45,21 +47,36 @@ export class MidiInputService {
   }
   
   connect() {
-    if (this.client == null) {
-      this.status = "Connecting...";
-      
-      this.client = new SockJS('http://' + this.host + '/note');
-      this.mystomp = Stomp.over(this.client);
-      
-      this.mystomp.connect({}, (frame) => {
-        this.count++;
-        this.status = "Connected";
-        this.notifyConnectionListerner();        
-        this.mystomp.subscribe("/topic/midiinput", (message:StompFrame) => {
-          this.notifyHandleMidiInputListerner(message.body);
-        });
+    this.isConnecting = true;
+    this.status = "Connecting...";
+    
+    let protocol:string = 'http://';
+    if (this.host.startsWith(protocol)) {
+      protocol = '';
+    }
+     
+    this.client = new SockJS(protocol + this.host + '/note');
+    this.mystomp = Stomp.over(this.client);
+    
+    this.mystomp.connect({}, (frame) => {
+      this.count++;
+      this.status = "Connected";
+      this.notifyConnectionListerner();        
+      this.mystomp.subscribe("/topic/midiinput", (message:StompFrame) => {
+        this.notifyHandleMidiInputListerner(message.body);
       });
-      this.client.onclose = this.reconnect;
+    }, () => {
+      //errorCallback
+      console.log('errorCallback');
+    });
+    this.client.onclose = (e: CloseEvent) => {
+      this.isConnecting = false;
+      if (e.code == 1002) {
+        this.status = "Error";
+        this.events.publish('midiInput:errorConnection');
+      }else{
+        this.events.publish('midiInput:errorConnectionGeneric');
+      }
     }
   }
   

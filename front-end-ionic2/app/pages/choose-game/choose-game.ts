@@ -1,12 +1,13 @@
-import {Page, NavController, NavParams, Alert, Modal, ViewController} from 'ionic-angular';
+import {Page, NavController, NavParams, Alert, Modal, ViewController, Events} from 'ionic-angular';
 import {GamePage} from '../game/game';
+import {BasePage} from '../base/base-page';
 import {PreferencesPage} from '../preferences/preferences';
 import {NoteLevel} from '../../providers/note-service/note-service';
 
 @Page({
   templateUrl: 'build/pages/choose-game/choose-game.html'
 })
-export class ChooseGamePage {
+export class ChooseGamePage extends BasePage {
   public sol:boolean = true;
   public fa:boolean = false;
   public solfa:boolean = false;
@@ -14,11 +15,11 @@ export class ChooseGamePage {
   private delayShowAlertScore:boolean = false;
   private delayScore:any;
 
-  constructor(private nav: NavController,
+  constructor(public nav: NavController,
               private navParams: NavParams,
-              public viewCtrl: ViewController) {
-                
-    
+              public viewCtrl: ViewController,
+              public events: Events) {
+     super(nav, events);
   }
   
   onPageLoaded() {

@@ -1,10 +1,11 @@
 /// <reference path="../../../node_modules/retyped-sockjs-client-tsd-ambient/sockjs-client.d.ts" />
 /// <reference path="../../../typings/modules/stomp-websocket/stomp-websocket.d.ts" />
-import {Page, NavController, NavParams, Alert} from 'ionic-angular';
+import {Page, NavController, NavParams, Alert, Events} from 'ionic-angular';
 import {NoteService, Note, NoteHtml, ClaveFa, ClaveSol, NoteLevel} from '../../providers/note-service/note-service';
 import {MidiInputService, HandleMidiInputListerner} from '../../providers/midiinput-service/midiinput-service';
 import {StorageService, SqlStorageConstants} from '../../providers/storage-service/storage-service';
 import {ResultPage} from '../result/result';
+import {BasePage} from '../base/base-page';
 import {Observable} from 'rxjs/Rx'
 import * as SockJS from 'sockjs-client';
 import BaseEvent = __SockJSClient.BaseEvent;
@@ -15,7 +16,7 @@ import SockJSClass = __SockJSClient.SockJSClass;
   providers: [NoteService],
   selector: 'game'
 })
-export class GamePage implements HandleMidiInputListerner {
+export class GamePage extends BasePage implements HandleMidiInputListerner {
 
   
   public inputNotes:Note[] = [];
@@ -41,11 +42,16 @@ export class GamePage implements HandleMidiInputListerner {
   private randomNotes:Note[] = [];
   
   
-  constructor(private nav: NavController, 
+  constructor(public nav: NavController, 
               private noteService: NoteService,
               private navParams: NavParams,
               public midiInput: MidiInputService,
-              public storageService: StorageService) {
+              public storageService: StorageService,
+              public events: Events) {
+                
+    super(nav, events);
+   
+    this.listenEvents();
                 
     //TODO: BUG? no construtor vai iniciar só uma vez? Parece que não.
     this.level = navParams.get('level');
@@ -71,6 +77,12 @@ export class GamePage implements HandleMidiInputListerner {
     }
     
     midiInput.setHandleMidiInputListerner(this);
+  }
+  
+  listenEvents() {
+    this.events.subscribe('midiInput:errorConnectionGeneric', () => {
+      this.stop();
+    });
   }
   
   onConnection() {}
@@ -144,6 +156,7 @@ export class GamePage implements HandleMidiInputListerner {
       
       if (this.counterChallenges >= this.maxChallenges) {
         this.stop();
+        this.goToResult();
         return;
       }
       
@@ -185,11 +198,10 @@ export class GamePage implements HandleMidiInputListerner {
       this.timer.unsubscribe();
     }
     this.cleanTimer();
-    this.goToResult();
   }
   
   goToResult() {
-    this.nav.push(ResultPage, {score:this.score});    
+    this.nav.push(ResultPage, {score:this.score, level:this.level});    
   }
   
   cleanTimer() {

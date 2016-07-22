@@ -5,19 +5,20 @@ import {ConnectMidiInputPage} from './pages/connect-midiinput/connect-midiinput'
 import {PreferencesPage} from './pages/preferences/preferences';
 import {MidiInputService} from './providers/midiinput-service/midiinput-service';
 import {StorageService} from './providers/storage-service/storage-service';
+import {VersionService} from './providers/version-service/version-service';
 
 
 @App({
   template: '<ion-nav [root]="rootPage">Carregando...</ion-nav>',
   config: {}, // http://ionicframework.com/docs/v2/api/config/Config/,
-  providers: [MidiInputService, StorageService]
+  providers: [MidiInputService, StorageService, VersionService]
 })
 export class MyApp {
   //rootPage: any = HomePage;
   rootPage: any = ConnectMidiInputPage;
   //rootPage: any = PreferencesPage;
 
-  constructor(platform: Platform/*, private location: Location*/, midiInputService:MidiInputService) {
+  constructor(platform: Platform, midiInputService:MidiInputService) {
     if (document.referrer.endsWith('autoConnectRedirect.html')) {
       midiInputService.autoConnect = true;
     }

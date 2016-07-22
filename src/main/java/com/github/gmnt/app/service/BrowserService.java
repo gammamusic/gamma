@@ -1,6 +1,7 @@
 package com.github.gmnt.app.service;
 
 import com.teamdev.jxbrowser.chromium.Browser;
+import com.teamdev.jxbrowser.chromium.BrowserPreferences;
 
 public class BrowserService implements Runnable {
 	
@@ -20,6 +21,8 @@ public class BrowserService implements Runnable {
 
 	@Override
 	public void run() {
+                String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36 JxBrowser/6.5";
+                BrowserPreferences.setUserAgent(userAgent);
 		browser = new Browser();
 		isReady = true;
 	}

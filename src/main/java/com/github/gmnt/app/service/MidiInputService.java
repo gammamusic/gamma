@@ -27,10 +27,6 @@ import jportmidi.JPortMidiException;
 public class MidiInputService 
 	extends JPortMidi 
 	implements ActionListener, HandleMidiInputListener  {
-	
-	//TODO: adaptar para que esse parâmetro seja utilizado na nova estrutura
-	@Value("${midiinput}")
-    private String midiinput;
 
 	private Timer timer;
 	private MessageSendingOperations<String> messagingTemplate;
@@ -83,9 +79,8 @@ public class MidiInputService
 		super.poll();
 	}
 
-	public void loadDeviceChoices() throws JPortMidiException {
-		System.out.println(String.format("MidiInput Name: %s", midiinput));		
-		timer = new Timer(50 /* ms */, this);
+	/*public void loadDeviceChoices() throws JPortMidiException {
+		timer = new Timer(50, this);
 		timer.addActionListener(this);
 		this.setTrace(true);
 
@@ -110,7 +105,7 @@ public class MidiInputService
 			this.openInput(id, 100); // buffer size hopes to avoid overflow
 			timer.start(); // don't start timer if there's an error
 		}		
-	}
+	}*/
 	
 	public void openInput(MidiInputDevice input) throws JPortMidiException {
 		timer = new Timer(50 /* ms */, this);

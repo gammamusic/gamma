@@ -1,6 +1,4 @@
 import {Page, NavController} from 'ionic-angular';
-import {GitHubService} from '../../providers/git-hub-service/git-hub-service';
-import {DetailsPage} from '../details/details';
 
 @Page({
   templateUrl: 'build/pages/home/home.html',

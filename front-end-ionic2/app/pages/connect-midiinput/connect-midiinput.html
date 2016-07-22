@@ -1,22 +1,23 @@
 <ion-navbar *navbar>
   <ion-title>
-    Conexão com o servidor.
+    Conexão
   </ion-title>
 </ion-navbar>
 
-<ion-content class="connect-midiinput" onload="midiInput.pageLoad()">
+<ion-content class="connect-midiinput">
+  <div [hidden]="newVersion == false">
+    Está disponível uma nova versão desse aplicativo! Verifique em https://gammamusic.github.io
+  </div>
+  
   <ion-list inset>
     <ion-item>
-      <ion-label>Host</ion-label>
+      <ion-label>Servidor</ion-label>
       <ion-input [(ngModel)]="midiInput.host" type="text" #myInput></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Status</ion-label>
-      <ion-label>{{midiInput.status}}</ion-label>
     </ion-item>
   </ion-list>
   
-  <div padding>
-    <button block (click)="startConnection()" #buttonConnect>Conectar</button>
+  <div>
+    <ion-spinner [hidden]="midiInput.isConnecting == false"></ion-spinner>
+    <button block (click)="startConnection()" #buttonConnect [hidden]="midiInput.isConnecting">Conectar</button>
   </div>
 </ion-content>
