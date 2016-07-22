@@ -3,4 +3,4 @@ machine:
         version: oraclejdk8
 general:
   artifacts:
-    - "target/*.zip" # relative to the build directory
+    - "target/dist" # relative to the build directory
