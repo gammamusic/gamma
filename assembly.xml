@@ -1,5 +1,6 @@
 <assembly>
 	<id>${project.version}</id>
+        <outputDirectory>${project.build.directory}/dist</outputDirectory>
 	<formats>
 		<format>zip</format>
 	</formats>
