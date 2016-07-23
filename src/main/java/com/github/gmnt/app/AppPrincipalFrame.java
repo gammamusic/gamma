@@ -65,6 +65,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 
 	private JLabel statusLabel = new JLabel("");
 	private JComboBox<MidiInputDevice> comboBoxMidiInput = new JComboBox<MidiInputDevice>();
+        private boolean isPageLoaded = false;
         
         @Log private Logger logger;
 
@@ -197,7 +198,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			loadFrontEndUrl(browser, editServidor.getText());
 			
 	        
-	        this.setVisible(true);
+	        
 	        
 	        browser.addLoadListener(new LoadAdapter() {
 	            @Override
@@ -216,8 +217,20 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 	         
 	            @Override
 	            public void onFinishLoadingFrame(FinishLoadingEvent event) {
-	                if (event.isMainFrame()) {
+	                if (event.isMainFrame() && !isPageLoaded) {
+                            isPageLoaded = true;
+                            setVisible(true);
+                
+                            if (Application.hasNewVersion()) {
+                                JDialog dialog = new JOptionPane(String.format("Uma nova versão desse aplicativo (%s) está disponível em https://gammamusic.github.io/.", Application.version.getLast()),
+                                                JOptionPane.INFORMATION_MESSAGE,
+                                                JOptionPane.DEFAULT_OPTION).createDialog("Aviso");
+                                dialog.setAlwaysOnTop(true);
+                                dialog.setVisible(true);
+                                dialog.dispose();
+                            }
 	                    System.out.println("Main frame has finished loading");
+                            
 	                }
 	            }
 	         

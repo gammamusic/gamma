@@ -46,6 +46,8 @@ public class Application {
     static Rectangle2D.Double splashProgressArea;   // area where we draw the progress bar
     static Font font;                               // used to draw our text
     static boolean showProgressArea = false;
+    static boolean newVersion = false;
+    public static VersionDTO version;
     
     public static void main(String[] args) throws JPortMidiException, InterruptedException, IOException {
     	splashInit();           // initialize splash overlay drawing parameters
@@ -261,15 +263,10 @@ public class Application {
             URL url;
             url = new URL("https://raw.githubusercontent.com/gammamusic/dist/master/lastedversion.json");
              ObjectMapper mapper = new ObjectMapper();
-            VersionDTO version = mapper.readValue(url, new TypeReference<VersionDTO>(){});
+            version = mapper.readValue(url, new TypeReference<VersionDTO>(){});
             String localCurrentVersion = Application.class.getPackage().getImplementationVersion();
             if (localCurrentVersion == null || !Application.class.getPackage().getImplementationVersion().equals(version.getLast())) {
-                JDialog dialog = new JOptionPane(String.format("Uma nova versão desse aplicativo (%s) está disponível em https://gammamusic.github.io/.", version.getLast()),
-    				JOptionPane.INFORMATION_MESSAGE,
-    				JOptionPane.DEFAULT_OPTION).createDialog("Aviso");
-                dialog.setAlwaysOnTop(true);
-                dialog.setVisible(true);
-                dialog.dispose();                                
+                newVersion = true;
             }
         } catch (MalformedURLException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
@@ -277,6 +274,10 @@ public class Application {
             } catch (IOException ex) {
             Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+    
+    public static boolean hasNewVersion() {
+        return newVersion;
     }
 
 }

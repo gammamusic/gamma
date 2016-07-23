@@ -30,4 +30,12 @@
                 <goal>resources:resources</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-package</actionName>
+            <displayName>package</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>package</goal>
+            </goals>
+        </action>
     </actions>

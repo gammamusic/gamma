@@ -170,7 +170,7 @@
 									<filtering>true</filtering>
 									<includes>
 										<include>startServer.bat</include>
-										<include>Splash.png</include>
+                                                                                <include>Splash.bmp</include>
 										<include>gamma.l4j.ini</include>
 									</includes>
 								</resource>
@@ -199,6 +199,13 @@
 							<outfile>${project.build.directory}/gamma.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<icon>${project.basedir}/front-end-ionic2/www/favicon.ico</icon>
+                                                        <splash>
+                                                            <file>${project.basedir}/Splash.bmp</file>
+                                                             <waitForWindow>false</waitForWindow>
+                                                             <timeout>60</timeout>
+                                                             <timeoutErr>true</timeoutErr>
+                                                        </splash>
+<!--                                                        <splash>Splash.bmp</splash>-->
 <!-- 							<classPath>./tools/libjar/*</classPath> -->
 							<jre>
 								<path>.\tools\jre\</path>
