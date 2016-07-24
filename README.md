@@ -1,4 +1,5 @@
 # Gamma Music Notation Training
+[![Circle CI](https://circleci.com/gh/gammamusic/gamma.svg?style=svg)](https://circleci.com/gh/gammamusic/gamma)
 
 https://gammamusic.github.io
 
