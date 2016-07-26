@@ -85,6 +85,9 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
     });
   }
   
+  onPageWillLeave() {
+    this.timer.unsubscribe();
+  }
   onConnection() {}
   
   /**

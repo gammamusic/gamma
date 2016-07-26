@@ -1,6 +1,6 @@
 import {Page, NavController, NavParams, ViewController, Toast, Events, Alert} from 'ionic-angular';
 import {AfterViewInit, ViewChild, Renderer, ElementRef} from '@angular/core' 
-import {ChooseGamePage} from '../choose-game/choose-game';
+import {TrainingChoosePage} from '../training-choose/training-choose';
 import {MyApp} from '../../app';
 import {ChooseChordPage} from '../choose-chord/choose-chord';
 import {MidiInputService} from '../../providers/midiinput-service/midiinput-service';
@@ -102,6 +102,6 @@ export class ConnectMidiInputPage implements ConnectionListerner, AfterViewInit 
   }
   
   goToChooseGame() {
-    this.nav.push(ChooseGamePage);
+    this.nav.push(TrainingChoosePage);
   }
 }

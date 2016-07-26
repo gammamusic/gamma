@@ -1,6 +1,6 @@
 import {Page, NavController, NavParams, ViewController, Events} from 'ionic-angular';
 import {BasePage} from '../base/base-page';
-import {ChooseGamePage} from '../choose-game/choose-game';
+import {TrainingChoosePage} from '../training-choose/training-choose';
 import {StorageService} from '../../providers/storage-service/storage-service';
 
 
@@ -45,7 +45,7 @@ export class ResultPage extends BasePage {
   
   goToChooseGame() {
     this.nav.setRoot(ResultPage);
-    this.nav.push(ChooseGamePage);
+    this.nav.push(TrainingChoosePage);
   }
   
 }

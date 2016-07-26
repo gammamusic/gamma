@@ -173,16 +173,17 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 			
 			addressPane.add(editServidor);
 			
-			//TODO: internationalization
-			JButton recarregareButton = new JButton("Recarregar Página Principal");
-			recarregareButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					loadFrontEndUrl(browser, editServidor.getText());
-				}          
-			});
-			addressPane.add(recarregareButton, "wrap");
-			
-			
+                        //apresenta o botão somente se estiver em modo desenvolvimento
+                        if (this.getClass().getPackage().getImplementationVersion() == null) {
+                            //TODO: internationalization
+                            JButton recarregareButton = new JButton("Recarregar Página Principal");
+                            recarregareButton.addActionListener(new ActionListener() {
+                                    public void actionPerformed(ActionEvent e) {
+                                            loadFrontEndUrl(browser, editServidor.getText());
+                                    }          
+                            });
+                            addressPane.add(recarregareButton, "wrap");
+                        }
 	        
 			JPanel statusPanel = new JPanel();
 			statusPanel.setBorder(new BevelBorder(BevelBorder.LOWERED));

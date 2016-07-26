@@ -1,0 +1,30 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Treinamento
+  </ion-title>
+    <ion-buttons end>
+      <button (click)="presentFilter()">
+        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      </button>
+    </ion-buttons>
+</ion-navbar>
+
+<ion-content class="training-choose">
+  
+  <ion-card>
+    <ion-list text-wrap>
+      <button ion-item (click)="goToGameNote()">
+        Notas musicais
+      </button>
+
+      <button ion-item (click)="goToGameChord()">
+        Acordes
+      </button>
+      
+      <button ion-item (click)="goToRecords()">
+        Visualizar Records
+      </button>
+      
+    </ion-list>
+  </ion-card>
+</ion-content>

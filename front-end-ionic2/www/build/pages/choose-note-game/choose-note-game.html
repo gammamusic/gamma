@@ -1,0 +1,52 @@
+<ion-navbar *navbar>
+  <ion-title>
+    Treinamento
+  </ion-title>
+    <ion-buttons end>
+      <button (click)="presentFilter()">
+        <ion-icon ios="ios-options-outline" md="md-options"></ion-icon>
+      </button>
+    </ion-buttons>
+</ion-navbar>
+
+<ion-content class="choose-game">
+  
+  <ion-card>
+    <ion-list text-wrap>
+      <button ion-item (click)="goToGame('level1')">
+        <!--<ion-icon name="cart" item-left ></ion-icon>-->
+        Nível 1 - Mão direita
+      </button>
+
+      <button ion-item (click)="goToGame('level2')">
+        Nível 2 - Mão esquerda
+      </button>
+      
+      <button ion-item (click)="goToGame('level3')">
+        Nível 3 - Mão direita e esquerda
+      </button>
+      
+      <button ion-item (click)="goToGame('level4')">
+        Nível 4 - Mão direita e esquerda + semi-notas
+      </button>
+    </ion-list>
+  </ion-card>
+  
+  <!--<ion-list radio-group>
+    <ion-item>
+      <ion-label>Sol (mão direita)</ion-label>
+      <ion-radio checked="{{sol}}"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>Fá (mão esquerda)</ion-label>
+      <ion-radio checked="{{fa}}"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>Ambas (mão direita e esquerda)</ion-label>
+      <ion-radio checked="{{solfa}}"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <div padding>
+    <button block (click)="goToGame()">Próximo</button>
+  </div>-->
+</ion-content>
