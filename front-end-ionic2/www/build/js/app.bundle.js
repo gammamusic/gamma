@@ -514,7 +514,6 @@ var GamePage = (function (_super) {
         this.counterChallenges = 0;
         this.randomNotes = [];
         this.listenEvents();
-        //TODO: BUG? no construtor vai iniciar só uma vez? Parece que não.
         this.level = navParams.get('level');
         this.dummyNotas();
         //TODO: cuidado deve ficar em um 

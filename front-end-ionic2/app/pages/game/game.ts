@@ -52,8 +52,6 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
     super(nav, events);
    
     this.listenEvents();
-                
-    //TODO: BUG? no construtor vai iniciar só uma vez? Parece que não.
     this.level = navParams.get('level');
     
     this.dummyNotas();

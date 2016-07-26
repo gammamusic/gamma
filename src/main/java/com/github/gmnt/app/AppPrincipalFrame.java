@@ -230,8 +230,6 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
                                 dialog.setVisible(true);
                                 dialog.dispose();
                             }
-	                    System.out.println("Main frame has finished loading");
-                            
 	                }
 	            }
 	         

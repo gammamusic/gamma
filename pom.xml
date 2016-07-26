@@ -5,7 +5,7 @@
 
 	<groupId>com.github.gmnt</groupId>
 	<artifactId>server-midi</artifactId>
-	<version>0.0.1-alpha</version>
+	<version>1.0</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -14,7 +14,6 @@
 	</parent>
 
 	<properties>
-		<!-- The main class to start by executing java -jar -->
 		<start-class>com.github.gmnt.app.Application</start-class>
 		<java.version>1.8</java.version>
 	</properties>
@@ -205,8 +204,6 @@
                                                              <timeout>60</timeout>
                                                              <timeoutErr>true</timeoutErr>
                                                         </splash>
-<!--                                                        <splash>Splash.bmp</splash>-->
-<!-- 							<classPath>./tools/libjar/*</classPath> -->
 							<jre>
 								<path>.\tools\jre\</path>
 								<minVersion>1.8.0</minVersion>
