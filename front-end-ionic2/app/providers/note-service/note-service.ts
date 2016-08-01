@@ -42,24 +42,25 @@ export class NoteHtml {
 
 
 export class BasicNote {
-    constructor(public note:string) {
+    constructor(public note:string, public notePt:String) {
       
     }
     
-    static C = new BasicNote("C");
-    static D = new BasicNote("D");
-    static E = new BasicNote("E");
-    static F = new BasicNote("F");
-    static G = new BasicNote("G");
-    static A = new BasicNote("A");
-    static B = new BasicNote("B");
+    static C = new BasicNote("C", "Dó");
+    static D = new BasicNote("D", "Ré");
+    static E = new BasicNote("E", "Mi");
+    static F = new BasicNote("F", "Fá");
+    static G = new BasicNote("G", "Sol");
+    static A = new BasicNote("A", "Lá");
+    static B = new BasicNote("B", "Si");
     
-    static CSharp = new BasicNote("C#");
-    static DSharp = new BasicNote("D#");
-    static FSharp = new BasicNote("F#");
-    static GSharp = new BasicNote("G#");
-    static ASharp = new BasicNote("A#");
-    static BSharp = new BasicNote("B#");
+    //TODO: prover nomes
+    static CSharp = new BasicNote("C#", "???");
+    static DSharp = new BasicNote("D#", "???");
+    static FSharp = new BasicNote("F#", "???");
+    static GSharp = new BasicNote("G#", "???");
+    static ASharp = new BasicNote("A#", "???");
+    static BSharp = new BasicNote("B#", "???");
     
     static ALL : BasicNote[] = [BasicNote.C, BasicNote.D, BasicNote.E, BasicNote.F, BasicNote.G, BasicNote.A, BasicNote.B,
                                 BasicNote.CSharp, BasicNote.DSharp, BasicNote.FSharp, BasicNote.GSharp, BasicNote.ASharp];

@@ -24,6 +24,8 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
   public score:number = 0;
   public isChanllengeRunning:boolean = false;
   public isGameStarted = false;
+  public isTutorActivate = false;
+  public alertTutor:Alert;
   
   public timeRemaining:number = 0;
   public timeTotal:number = 0;
@@ -118,8 +120,11 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
     var note = midiinput[0];
     var keyOn = midiinput[1];
     if (keyOn) {
-      if (note.info != null) {
-        this.computeNewScore(note);
+      if (this.isTutorActivate) {
+          this.closeTutor();
+          this.alertTutor.destroy();
+      }else{
+          this.computeNewScore(note);
       }
     }
   }
@@ -128,7 +133,7 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
     //TODO: distinguir "Do" da Clave sol com a clave de "Fá"
     if (this.gameNotes.length != this.inputNotes.length) {
       return false;
-    }    
+    }
      
     for(let gameNote of this.gameNotes) {
       if (this.inputNotes.indexOf(gameNote) == -1) {
@@ -152,21 +157,66 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
           this.score += 10;
         } else {
           this.score -= 10;
+          this.showTutor();
         }
       }
-      
-      if (this.counterChallenges >= this.maxChallenges) {
-        this.stop();
-        this.goToResult();
-        return;
-      }
-      
-      this.gameNotes = [];
-      this.gameNotes.push(this.getNextNote());
-      this.inputNotes = [];
-      this.counterChallenges++;
-      this.reset();
+      if (this.isTutorActivate == false)
+        this.preparToNextGame();
     }
+  }
+  
+  showTutor() {
+    this.isTutorActivate = true;
+    this.stop();
+    let correct:string = this.getFormatedNotes(this.gameNotes);
+    let input:string = this.getFormatedNotes(this.inputNotes);
+    
+    this.alertTutor = Alert.create({
+      title: 'Tutor',
+      subTitle: `A nota era: ${correct}<br>Você teclou: ${input}`,
+      message: 'Dica: ao pressionar qualquer tecla do teclado, esta janela será automaticamente fechada.',
+      buttons: [
+          {
+              text: 'OK',
+              handler: () => {
+                this.closeTutor();
+              }
+          }
+      ]
+    });
+    this.nav.present(this.alertTutor);
+  }
+  
+  closeTutor() {
+    this.isTutorActivate = false;
+    this.preparToNextGame();
+  }
+  
+  getFormatedNotes(notes:Note[]) {
+    let result:string = "";
+    for(let note of notes) {
+      let separador = "";
+      if (result != "") {
+        separador = ", ";
+      }
+      result += separador + note.baseNote.note + " (" + note.baseNote.notePt + ")";
+    }
+    if (result == "") result = "(nada)"; 
+    return result;
+  }
+  
+  preparToNextGame() {
+    if (this.counterChallenges >= this.maxChallenges) {
+      this.stop();
+      this.goToResult();
+      return;
+    }
+    
+    this.gameNotes = [];
+    this.gameNotes.push(this.getNextNote());
+    this.inputNotes = [];
+    this.counterChallenges++;
+    this.reset();
   }
   
   start() {

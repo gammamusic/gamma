@@ -138,7 +138,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 	        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	        this.add(addressPane, BorderLayout.NORTH);
 	        
-	        this.setSize(400, 500);
+	        this.setSize(450, 530);
 	        this.setLocationRelativeTo(null);
 	        
 	        
@@ -219,6 +219,7 @@ implements /*CommandLineRunner,*/ HandleMidiInputListener {
 	            @Override
 	            public void onFinishLoadingFrame(FinishLoadingEvent event) {
 	                if (event.isMainFrame() && !isPageLoaded) {
+                            browser.executeJavaScript("document.querySelectorAll('button.button-block')[0].click()");
                             isPageLoaded = true;
                             setVisible(true);
                 

@@ -505,6 +505,7 @@ var GamePage = (function (_super) {
         this.score = 0;
         this.isChanllengeRunning = false;
         this.isGameStarted = false;
+        this.isTutorActivate = false;
         this.timeRemaining = 0;
         this.timeTotal = 0;
         this.incremento = 0;
@@ -571,7 +572,11 @@ var GamePage = (function (_super) {
         var note = midiinput[0];
         var keyOn = midiinput[1];
         if (keyOn) {
-            if (note.info != null) {
+            if (this.isTutorActivate) {
+                this.closeTutor();
+                this.alertTutor.destroy();
+            }
+            else {
                 this.computeNewScore(note);
             }
         }
@@ -603,19 +608,63 @@ var GamePage = (function (_super) {
                 }
                 else {
                     this.score -= 10;
+                    this.showTutor();
                 }
             }
-            if (this.counterChallenges >= this.maxChallenges) {
-                this.stop();
-                this.goToResult();
-                return;
-            }
-            this.gameNotes = [];
-            this.gameNotes.push(this.getNextNote());
-            this.inputNotes = [];
-            this.counterChallenges++;
-            this.reset();
+            if (this.isTutorActivate == false)
+                this.preparToNextGame();
         }
+    };
+    GamePage.prototype.showTutor = function () {
+        var _this = this;
+        this.isTutorActivate = true;
+        this.stop();
+        var correct = this.getFormatedNotes(this.gameNotes);
+        var input = this.getFormatedNotes(this.inputNotes);
+        this.alertTutor = ionic_angular_1.Alert.create({
+            title: 'Tutor',
+            subTitle: "A nota era: " + correct + "<br>Voc\u00EA teclou: " + input,
+            message: 'Dica: ao pressionar qualquer tecla do teclado, esta janela será automaticamente fechada.',
+            buttons: [
+                {
+                    text: 'OK',
+                    handler: function () {
+                        _this.closeTutor();
+                    }
+                }
+            ]
+        });
+        this.nav.present(this.alertTutor);
+    };
+    GamePage.prototype.closeTutor = function () {
+        this.isTutorActivate = false;
+        this.preparToNextGame();
+    };
+    GamePage.prototype.getFormatedNotes = function (notes) {
+        var result = "";
+        for (var _i = 0, notes_1 = notes; _i < notes_1.length; _i++) {
+            var note = notes_1[_i];
+            var separador = "";
+            if (result != "") {
+                separador = ", ";
+            }
+            result += separador + note.baseNote.note + " (" + note.baseNote.notePt + ")";
+        }
+        if (result == "")
+            result = "(nada)";
+        return result;
+    };
+    GamePage.prototype.preparToNextGame = function () {
+        if (this.counterChallenges >= this.maxChallenges) {
+            this.stop();
+            this.goToResult();
+            return;
+        }
+        this.gameNotes = [];
+        this.gameNotes.push(this.getNextNote());
+        this.inputNotes = [];
+        this.counterChallenges++;
+        this.reset();
     };
     GamePage.prototype.start = function () {
         var _this = this;
@@ -1048,8 +1097,9 @@ var NoteHtml = (function () {
 }());
 exports.NoteHtml = NoteHtml;
 var BasicNote = (function () {
-    function BasicNote(note) {
+    function BasicNote(note, notePt) {
         this.note = note;
+        this.notePt = notePt;
     }
     BasicNote.valueOf = function (noteWithOctave) {
         var strNote = BasicNote.getNote(noteWithOctave);
@@ -1069,19 +1119,20 @@ var BasicNote = (function () {
         var index = noteWithOctave.search(/\d/);
         return +noteWithOctave.substring(index, noteWithOctave.length);
     };
-    BasicNote.C = new BasicNote("C");
-    BasicNote.D = new BasicNote("D");
-    BasicNote.E = new BasicNote("E");
-    BasicNote.F = new BasicNote("F");
-    BasicNote.G = new BasicNote("G");
-    BasicNote.A = new BasicNote("A");
-    BasicNote.B = new BasicNote("B");
-    BasicNote.CSharp = new BasicNote("C#");
-    BasicNote.DSharp = new BasicNote("D#");
-    BasicNote.FSharp = new BasicNote("F#");
-    BasicNote.GSharp = new BasicNote("G#");
-    BasicNote.ASharp = new BasicNote("A#");
-    BasicNote.BSharp = new BasicNote("B#");
+    BasicNote.C = new BasicNote("C", "Dó");
+    BasicNote.D = new BasicNote("D", "Ré");
+    BasicNote.E = new BasicNote("E", "Mi");
+    BasicNote.F = new BasicNote("F", "Fá");
+    BasicNote.G = new BasicNote("G", "Sol");
+    BasicNote.A = new BasicNote("A", "Lá");
+    BasicNote.B = new BasicNote("B", "Si");
+    //TODO: prover nomes
+    BasicNote.CSharp = new BasicNote("C#", "???");
+    BasicNote.DSharp = new BasicNote("D#", "???");
+    BasicNote.FSharp = new BasicNote("F#", "???");
+    BasicNote.GSharp = new BasicNote("G#", "???");
+    BasicNote.ASharp = new BasicNote("A#", "???");
+    BasicNote.BSharp = new BasicNote("B#", "???");
     BasicNote.ALL = [BasicNote.C, BasicNote.D, BasicNote.E, BasicNote.F, BasicNote.G, BasicNote.A, BasicNote.B,
         BasicNote.CSharp, BasicNote.DSharp, BasicNote.FSharp, BasicNote.GSharp, BasicNote.ASharp];
     return BasicNote;
