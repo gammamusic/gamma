@@ -1,5 +1,6 @@
 /// <reference path="../../../node_modules/retyped-sockjs-client-tsd-ambient/sockjs-client.d.ts" />
 /// <reference path="../../../typings/modules/stomp-websocket/stomp-websocket.d.ts" />
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Events} from 'ionic-angular';
 import {NoteService, Note, NoteHtml, ClaveFa, ClaveSol, Chord, BasicNote} from '../../providers/note-service/note-service';
 import {MidiInputService, HandleMidiInputListerner} from '../../providers/midiinput-service/midiinput-service';
@@ -10,7 +11,7 @@ import * as SockJS from 'sockjs-client';
 import BaseEvent = __SockJSClient.BaseEvent;
 import SockJSClass = __SockJSClient.SockJSClass;
 
-@Page({
+@Component({
   templateUrl: 'build/pages/game-chord/game-chord.html',
   providers: [NoteService],
   selector: 'game'
@@ -48,7 +49,7 @@ export class GameChordPage extends BasePage implements HandleMidiInputListerner 
   }
   
   //TODO: fazer o mesmo no game (=game-note)
-  onPageDidEnter() {
+  ionViewDidEnter() {
     this.midiInput.setHandleMidiInputListerner(this);
   }
   

@@ -1,9 +1,10 @@
+import {Component} from '@angular/core';
 import {Page, NavController, Events, ViewController, Alert} from 'ionic-angular';
 import {BasePage} from '../base/base-page';
 import {StorageService, SqlStorageConstants} from '../../providers/storage-service/storage-service';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/preferences/preferences.html'
 })
 export class PreferencesPage extends BasePage {

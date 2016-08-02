@@ -1,6 +1,7 @@
+import {Component} from '@angular/core';
 import {Page, NavController} from 'ionic-angular';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/home/home.html',
   //providers: [GitHubService]
 })

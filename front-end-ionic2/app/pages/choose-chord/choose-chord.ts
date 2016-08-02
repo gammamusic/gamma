@@ -1,8 +1,9 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Events} from 'ionic-angular';
 import {GameChordPage} from '../game-chord/game-chord';
 import {BasePage} from '../base/base-page';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/choose-chord/choose-chord.html'
 })
 export class ChooseChordPage extends BasePage {
@@ -14,7 +15,7 @@ export class ChooseChordPage extends BasePage {
     super(nav, events);
   }
   
-  onPageDidEnter() {
+  ionViewDidEnter() {
     
   }
 

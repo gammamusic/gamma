@@ -1,10 +1,11 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Modal, ViewController, Events} from 'ionic-angular';
 import {GamePage} from '../game/game';
 import {BasePage} from '../base/base-page';
 import {PreferencesPage} from '../preferences/preferences';
 import {NoteLevel} from '../../providers/note-service/note-service';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/choose-note-game/choose-note-game.html'
 })
 export class ChooseNoteGamePage extends BasePage {
@@ -22,10 +23,10 @@ export class ChooseNoteGamePage extends BasePage {
      super(nav, events);
   }
   
-  onPageLoaded() {
+  ionViewLoaded() {
   }
   
-  onPageDidEnter() {
+  ionViewDidEnter() {
     if (this.delayShowAlertScore) {
       this.showAlertScore();
     }

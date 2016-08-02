@@ -1,10 +1,11 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, ViewController, Events} from 'ionic-angular';
 import {BasePage} from '../base/base-page';
 import {TrainingChoosePage} from '../training-choose/training-choose';
 import {StorageService} from '../../providers/storage-service/storage-service';
 
 
-@Page({
+@Component({
   templateUrl: 'build/pages/result/result.html',
 })
 export class ResultPage extends BasePage {
@@ -18,11 +19,11 @@ export class ResultPage extends BasePage {
     super(nav, events);
   }
   
-  onPageLoaded() {
+  ionViewLoaded() {
     this.viewCtrl.showBackButton(false);
   }
   
-  onPageWillEnter() {
+  ionViewWillEnter() {
     new Promise((resolve, reject) => {
       //TODO: setar corretamente a chave
       this.storageService.tryAddNewRecord(this.navParams.get("score"), 
@@ -34,7 +35,7 @@ export class ResultPage extends BasePage {
     });
   }
   
-  onPageDidEnter() {
+  ionViewDidEnter() {
     //TODO: informar que se trata de um novo record!
   }
   

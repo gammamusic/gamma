@@ -1,4 +1,5 @@
-import {App, Platform, Storage, SqlStorage} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {App, Platform, ionicBootstrap, Storage, SqlStorage} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
 import {ConnectMidiInputPage} from './pages/connect-midiinput/connect-midiinput';
@@ -8,10 +9,8 @@ import {StorageService} from './providers/storage-service/storage-service';
 import {VersionService} from './providers/version-service/version-service';
 
 
-@App({
-  template: '<ion-nav [root]="rootPage">Carregando...</ion-nav>',
-  config: {}, // http://ionicframework.com/docs/v2/api/config/Config/,
-  providers: [MidiInputService, StorageService, VersionService]
+@Component({
+  templateUrl: 'build/app.html'
 })
 export class MyApp {
   //rootPage: any = HomePage;
@@ -30,3 +29,12 @@ export class MyApp {
     });
   }
 }
+
+// Pass the main app component as the first argument
+// Pass any providers for your app in the second argument
+// Set any config for your app as the third argument:
+// http://ionicframework.com/docs/v2/api/config/Config/
+
+ionicBootstrap(MyApp, [MidiInputService, StorageService, VersionService], {
+  tabbarPlacement: 'bottom'
+});

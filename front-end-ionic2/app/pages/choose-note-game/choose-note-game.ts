@@ -1,10 +1,11 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Modal, ViewController, Events} from 'ionic-angular';
 import {GamePage} from '../game/game';
 import {BasePage} from '../base/base-page';
 import {PreferencesPage} from '../preferences/preferences';
 import {NoteLevel} from '../../providers/note-service/note-service';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/choose-note-game/choose-note-game.html'
 })
 export class ChooseNoteGamePage extends BasePage {
@@ -21,26 +22,20 @@ export class ChooseNoteGamePage extends BasePage {
               public events: Events) {
      super(nav, events);
   }
-  
-  onPageLoaded() {
-  }
-  
-  onPageDidEnter() {
-    if (this.delayShowAlertScore) {
-      this.showAlertScore();
-    }
-    this.delayShowAlertScore = false;
-  }
 
   goToGame(levelRaw:String) {
     var p_level:NoteLevel = NoteLevel.valueOf(levelRaw);
     
-    new Promise((resolve, reject) => {
-      this.nav.push(GamePage, {resolve: resolve, level:p_level});
-    }).then(score => {
-      this.delayScore = score;
-      this.delayShowAlertScore = true;
-    });
+    if (p_level == NoteLevel.RightAndLeftHandPlusSeminotesLevel) {
+      this.doAlert();
+    } else {
+      new Promise((resolve, reject) => {
+        this.nav.push(GamePage, {resolve: resolve, level:p_level});
+      }).then(score => {
+        this.delayScore = score;
+        this.delayShowAlertScore = true;
+      });  
+    }
   }
   
   presentFilter() {
@@ -48,14 +43,18 @@ export class ChooseNoteGamePage extends BasePage {
     this.nav.present(modal);
   }
   
-  
-  //TODO: esse método faz sentido?
-  showAlertScore() {
+  doAlert() {
     let alert = Alert.create({
-      title: 'Pontuação',
-      subTitle: 'Sua pontuação: ' +this.delayScore,
-      buttons: [{text: 'OK' }]
-      
+      title: 'Aviso!',
+      subTitle: `Essa funcionalidade estará disponível em uma versão futura desse aplicativo.`,
+      buttons: [
+          {
+              text: 'OK',
+              handler: () => {
+                  
+              }
+          }
+      ]
     });
     this.nav.present(alert);
   }

@@ -1,5 +1,6 @@
 /// <reference path="../../../node_modules/retyped-sockjs-client-tsd-ambient/sockjs-client.d.ts" />
 /// <reference path="../../../typings/modules/stomp-websocket/stomp-websocket.d.ts" />
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Events} from 'ionic-angular';
 import {NoteService, Note, NoteHtml, ClaveFa, ClaveSol, NoteLevel} from '../../providers/note-service/note-service';
 import {MidiInputService, HandleMidiInputListerner} from '../../providers/midiinput-service/midiinput-service';
@@ -11,7 +12,7 @@ import * as SockJS from 'sockjs-client';
 import BaseEvent = __SockJSClient.BaseEvent;
 import SockJSClass = __SockJSClient.SockJSClass;
 
-@Page({
+@Component({
   templateUrl: 'build/pages/game/game.html',
   providers: [NoteService],
   selector: 'game'
@@ -85,7 +86,7 @@ export class GamePage extends BasePage implements HandleMidiInputListerner {
     });
   }
   
-  onPageWillLeave() {
+  ionViewWillLeave() {
     this.timer.unsubscribe();
   }
   onConnection() {}

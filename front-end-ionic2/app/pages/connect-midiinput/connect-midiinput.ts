@@ -1,3 +1,4 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, ViewController, Toast, Events, Alert} from 'ionic-angular';
 import {AfterViewInit, ViewChild, Renderer, ElementRef} from '@angular/core' 
 import {TrainingChoosePage} from '../training-choose/training-choose';
@@ -7,11 +8,21 @@ import {MidiInputService} from '../../providers/midiinput-service/midiinput-serv
 import {VersionService} from '../../providers/version-service/version-service';
 import {ConnectionListerner} from '../../providers/midiinput-service/midiinput-service';
 import {Router} from '@angular/router';
+import {ChartComponent, Chart} from 'ng2-chartjs2';
 
-@Page({
-  templateUrl: 'build/pages/connect-midiinput/connect-midiinput.html'
+@Component({
+  templateUrl: 'build/pages/connect-midiinput/connect-midiinput.html',
+  directives: [ChartComponent]
 })
 export class ConnectMidiInputPage implements ConnectionListerner, AfterViewInit {
+  
+  labels: string[] = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
+  data: Chart.Dataset[] = [
+    {
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3]
+    }
+  ];
   
   @ViewChild('buttonConnect') button: ElementRef;
   
@@ -29,13 +40,13 @@ export class ConnectMidiInputPage implements ConnectionListerner, AfterViewInit 
     midiInput.host = window.location.host;
   }
   
-  onPageLoaded() {
+  ionViewLoaded() {
     this.viewCtrl.showBackButton(false);
     
     
   }
   
-  onPageDidEnter() {
+  ionViewDidEnter() {
     if (this.navParams.get("errorConnectionGeneric")) {
       let alert = Alert.create({
         title: 'Error!',

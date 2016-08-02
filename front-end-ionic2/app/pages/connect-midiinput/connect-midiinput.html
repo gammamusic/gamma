@@ -1,8 +1,10 @@
-<ion-navbar *navbar>
+<ion-header>
+  <ion-navbar>
   <ion-title>
     Conexão
   </ion-title>
-</ion-navbar>
+  </ion-navbar>
+</ion-header>
 
 <ion-content class="connect-midiinput">
   <div [hidden]="newVersion == false">
@@ -15,6 +17,10 @@
       <ion-input [(ngModel)]="midiInput.host" type="text" #myInput></ion-input>
     </ion-item>
   </ion-list>
+  
+  <div>
+    <chart [labels]="labels" [data]="data" type="line"></chart>
+  </div>
   
   <div>
     <ion-spinner [hidden]="midiInput.isConnecting == false"></ion-spinner>

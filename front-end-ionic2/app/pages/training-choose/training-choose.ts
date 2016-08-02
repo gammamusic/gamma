@@ -1,10 +1,11 @@
+import {Component} from '@angular/core';
 import {Page, NavController, NavParams, Alert, Modal, ViewController, Events} from 'ionic-angular';
 import {ChooseNoteGamePage} from '../choose-note-game/choose-note-game';
 import {BasePage} from '../base/base-page';
 import {PreferencesPage} from '../preferences/preferences';
 import {NoteLevel} from '../../providers/note-service/note-service';
 
-@Page({
+@Component({
   templateUrl: 'build/pages/training-choose/training-choose.html'
 })
 export class TrainingChoosePage extends BasePage {
@@ -16,11 +17,11 @@ export class TrainingChoosePage extends BasePage {
      super(nav, events);
   }
   
-  onPageLoaded() {
+  ionViewLoaded() {
     this.viewCtrl.showBackButton(false);
   }
   
-  onPageDidEnter() {
+  ionViewDidEnter() {
   }
 
   goToGameNote() {
