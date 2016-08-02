@@ -29,12 +29,7 @@ export class ChooseNoteGamePage extends BasePage {
     if (p_level == NoteLevel.RightAndLeftHandPlusSeminotesLevel) {
       this.doAlert();
     } else {
-      new Promise((resolve, reject) => {
-        this.nav.push(GamePage, {resolve: resolve, level:p_level});
-      }).then(score => {
-        this.delayScore = score;
-        this.delayShowAlertScore = true;
-      });  
+      this.nav.push(GamePage, {level:p_level});
     }
   }
   

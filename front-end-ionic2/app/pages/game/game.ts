@@ -13,9 +13,7 @@ import BaseEvent = __SockJSClient.BaseEvent;
 import SockJSClass = __SockJSClient.SockJSClass;
 
 @Component({
-  templateUrl: 'build/pages/game/game.html',
-  providers: [NoteService],
-  selector: 'game'
+  templateUrl: 'build/pages/game/game.html'
 })
 export class GamePage extends BasePage implements HandleMidiInputListerner {
 

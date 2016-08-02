@@ -11,18 +11,18 @@ import {Router} from '@angular/router';
 import {ChartComponent, Chart} from 'ng2-chartjs2';
 
 @Component({
-  templateUrl: 'build/pages/connect-midiinput/connect-midiinput.html',
-  directives: [ChartComponent]
+  templateUrl: 'build/pages/connect-midiinput/connect-midiinput.html' /*,
+  directives: [ChartComponent]*/
 })
 export class ConnectMidiInputPage implements ConnectionListerner, AfterViewInit {
   
-  labels: string[] = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
+  /*labels: string[] = ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"];
   data: Chart.Dataset[] = [
     {
       label: '# of Votes',
       data: [12, 19, 3, 5, 2, 3]
     }
-  ];
+  ];*/
   
   @ViewChild('buttonConnect') button: ElementRef;
   

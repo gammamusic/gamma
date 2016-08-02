@@ -7,7 +7,7 @@ import {PreferencesPage} from './pages/preferences/preferences';
 import {MidiInputService} from './providers/midiinput-service/midiinput-service';
 import {StorageService} from './providers/storage-service/storage-service';
 import {VersionService} from './providers/version-service/version-service';
-
+import {NoteService} from './providers/note-service/note-service';
 
 @Component({
   templateUrl: 'build/app.html'
@@ -35,6 +35,6 @@ export class MyApp {
 // Set any config for your app as the third argument:
 // http://ionicframework.com/docs/v2/api/config/Config/
 
-ionicBootstrap(MyApp, [MidiInputService, StorageService, VersionService], {
+ionicBootstrap(MyApp, [MidiInputService, StorageService, VersionService, NoteService], {
   tabbarPlacement: 'bottom'
 });
